@@ -8,15 +8,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.avensys.rts.certificationsservice.constant.MessageConstants;
 import com.avensys.rts.certificationsservice.payloadnewrequest.CertificationsRequestDTO;
@@ -29,6 +21,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/api/certifications")
 public class CertificationsController {
 
 	private final Logger log = LoggerFactory.getLogger(CertificationsController.class);
@@ -43,7 +36,7 @@ public class CertificationsController {
 		this.messageSource = messageSource;
 	}
 
-	@PostMapping("/certifications")
+	@PostMapping("")
 	public ResponseEntity<Object> createCertifications(@Valid @RequestBody CertificationsRequestDTO certificationsRequestDTO,
 			@RequestHeader(name = "Authorization") String token) {
 		log.info("Create a certifications : Controller ");
@@ -55,7 +48,7 @@ public class CertificationsController {
 				messageSource.getMessage(MessageConstants.MESSAGE_CREATED, null, LocaleContextHolder.getLocale()));
 	}
 
-	@GetMapping("/certifications/entity/{entityType}/{entityId}")
+	@GetMapping("/entity/{entityType}/{entityId}")
 	public ResponseEntity<Object> getCertificationsByEntityTypeAndEntityId(@PathVariable String entityType,
 			@PathVariable Integer entityId) {
 		log.info("Get certifications by entity type and entity id : Controller ");
@@ -64,7 +57,7 @@ public class CertificationsController {
 				messageSource.getMessage(MessageConstants.MESSAGE_SUCCESS, null, LocaleContextHolder.getLocale()));
 	}
 
-	@DeleteMapping("/certifications/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteCertifications(@PathVariable Integer id) {
 		log.info("Delete certifications : Controller ");
 		certificationsServiceImpl.deleteCertifications(id);
@@ -72,7 +65,7 @@ public class CertificationsController {
 				messageSource.getMessage(MessageConstants.MESSAGE_SUCCESS, null, LocaleContextHolder.getLocale()));
 	}
 
-	@PutMapping("/certifications/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<Object> updateCertifications(@PathVariable Integer id,
 			@Valid @RequestBody CertificationsRequestDTO certificationsRequestDTO,
 			@RequestHeader(name = "Authorization") String token) {
@@ -91,7 +84,7 @@ public class CertificationsController {
 	 * @param entityId
 	 * @return
 	 */
-	@DeleteMapping("/certifications/entity/{entityType}/{entityId}")
+	@DeleteMapping("/entity/{entityType}/{entityId}")
 	public ResponseEntity<Object> deleteCertificationsByEntityTypeAndEntityId(@PathVariable String entityType,
 			@PathVariable Integer entityId) {
 		log.info("Delete certifications by entity type and entity id : Controller ");
