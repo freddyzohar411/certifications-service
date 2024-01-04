@@ -36,7 +36,7 @@ public class CertificationsController {
 		this.messageSource = messageSource;
 	}
 
-	@PostMapping("")
+	@PostMapping("/add")
 	public ResponseEntity<Object> createCertifications(@Valid @RequestBody CertificationsRequestDTO certificationsRequestDTO,
 			@RequestHeader(name = "Authorization") String token) {
 		log.info("Create a certifications : Controller ");
