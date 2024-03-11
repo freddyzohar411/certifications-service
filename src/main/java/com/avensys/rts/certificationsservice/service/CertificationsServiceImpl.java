@@ -4,6 +4,7 @@ import java.util.List;
 
 import java.util.Optional;
 
+import com.avensys.rts.certificationsservice.payloadnewrequest.CertificationsListRequestDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,8 +69,13 @@ public class CertificationsServiceImpl implements CertificationsService {
 				.mapClientBodyToClass(formSubmissionResponse.getData(), FormSubmissionsResponseDTO.class);
 
 		savedCertificationsEntity.setFormSubmissionId(formSubmissionData.getId());
-
+		certificationsRepository.save(savedCertificationsEntity);
 		return certificationsEntityToCertificationsResponseDTO(savedCertificationsEntity);
+	}
+
+	@Override
+	public void createCertificationsList(CertificationsListRequestDTO certificationsListRequestDTO) {
+		certificationsListRequestDTO.getCertificationsList().forEach(this::createCertifications);
 	}
 
 	@Override
