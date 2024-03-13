@@ -1,5 +1,6 @@
 package com.avensys.rts.certificationsservice.controller;
 
+import com.avensys.rts.certificationsservice.payloadnewrequest.CertificationsListRequestDTO;
 import org.slf4j.Logger;
 
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,20 @@ public class CertificationsController {
 		certificationsRequestDTO.setUpdatedBy(userId);
 		CertificationsResponseDTO certificationsResponseDTO = certificationsServiceImpl.createCertifications(certificationsRequestDTO);
 		return ResponseUtil.generateSuccessResponse(certificationsResponseDTO, HttpStatus.CREATED,
+				messageSource.getMessage(MessageConstants.MESSAGE_CREATED, null, LocaleContextHolder.getLocale()));
+	}
+
+	@PostMapping("/add/list")
+	public ResponseEntity<Object> createCertificationsList(@RequestBody CertificationsListRequestDTO certificationsListRequestDTO,
+			@RequestHeader(name = "Authorization") String token) {
+		log.info("Create a certifications : Controller ");
+		Long userId = jwtUtil.getUserId(token);
+		certificationsListRequestDTO.getCertificationsList().forEach(certificationsRequestDTO -> {
+			certificationsRequestDTO.setCreatedBy(userId);
+			certificationsRequestDTO.setUpdatedBy(userId);
+		});
+		certificationsServiceImpl.createCertificationsList(certificationsListRequestDTO);
+		return ResponseUtil.generateSuccessResponse(null, HttpStatus.CREATED,
 				messageSource.getMessage(MessageConstants.MESSAGE_CREATED, null, LocaleContextHolder.getLocale()));
 	}
 
